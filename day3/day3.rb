@@ -1,10 +1,16 @@
-@file = File.open('input.txt')
-@file_data = @file.readlines(chomp: true)
+@input_data = File.readlines('input.txt', chomp: true).map(&:chars)
+reverse_data = @input_data.transpose
 
-@data = @file_data.map { |a| a.split(//).map(&:to_i) }
-@data.map do |value, i|
-  value[i]
+gamma_rate = reverse_data.map do |row|
+  row.max_by { |bit| row.count(bit) }.to_s
+end.join.to_i(2)
+
+epsilon_rate = reverse_data.map do |row|
+  row.min_by { |bit| row.count(bit) }.to_s
+end.join.to_i(2)
+
+power_consumption = gamma_rate * epsilon_rate
+
+tab = data.select do |row|
+  row.map { |bit| bit == gamma_rate[bit] }
 end
-# ça me retourne un tableau avec tous les 1ers chiffres de chaque ligne seulement
-# alors que je voudrais un tableau par colonne
-# une fois que les colonnes sont en tableau, faire un max_by par colonne ?
